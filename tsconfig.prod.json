@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "jest.setup.ts",
+    "**/*.spec.ts",
+    "mocks/*",
+    "gulpfile.ts",
+    "src/exe.ts",
+    "webpack.config.ts"
+  ]
+}

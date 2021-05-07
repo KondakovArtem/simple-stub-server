@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Menu>
+    <Items>
+        <Item>
+            <ItemSysname>8736B664-F11A-4220-BEEA-891ABFCD3123</ItemSysname>
+            <ItemCaption>Данный заголовок должен быть скрыт, т.к. GROUP</ItemCaption>
+            <ItemDescription></ItemDescription>
+            <ItemExpanded>1</ItemExpanded>
+            <ItemAction>GROUP</ItemAction>
+            <ItemOpenMulti/>
+            <ItemOpenNewPage/>
+            <ItemIconData>pi-send</ItemIconData>
+            <Items>
+                <Item>
+                    <ItemSysname>8736B664-F92A-4220-BEEA-3E2A1FCD37D1</ItemSysname>
+                    <ItemCaption>КЗ</ItemCaption>
+                    <ItemDescription>КЗ</ItemDescription>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-bell</ItemIconData>
+                    <Items>
+                        <Item>
+                            <ItemSysname>1116B664-F92A-4220-BEEA-4E2A1FCD37D1</ItemSysname>
+                            <ItemCaption>WEB COMPONENTS ADD</ItemCaption>
+                            <ItemDescription>WEB COMPONENTS app-mytestcomponent</ItemDescription>
+                            <ItemAction>ROUTE</ItemAction>
+                            <ItemActionParams>test-app/add</ItemActionParams>
+                            <ItemExpanded>1</ItemExpanded>
+                            <ItemOpenMulti/>
+                            <ItemOpenNewPage/>
+                            <ItemIconData>pi-bell</ItemIconData>
+                            <Items>
+                            </Items>
+                        </Item>
+                        <Item>
+                            <ItemSysname>1116B664-F92A-4220-BEEA-4E2A1FCD37D2</ItemSysname>
+                            <ItemCaption>WEB COMPONENTS EDIT</ItemCaption>
+                            <ItemDescription>WEB COMPONENTS app-mytestcomponent</ItemDescription>
+                            <ItemAction>ROUTE</ItemAction>
+                            <ItemActionParams>test-app/edit</ItemActionParams>
+                            <ItemExpanded>1</ItemExpanded>
+                            <ItemOpenMulti/>
+                            <ItemOpenNewPage/>
+                            <ItemInputParams>
+                            </ItemInputParams>
+                            <ItemIconData>pi-bell</ItemIconData>
+                            <Items>
+                            </Items>
+                        </Item>
+                        <Item>
+                            <ItemSysname>1116B664-F13A-4220-BEEA-4E2A1FCD37D2</ItemSysname>
+                            <ItemCaption>WEB COMPONENTS EDIT 2</ItemCaption>
+                            <ItemDescription>WEB COMPONENTS app-mytestcomponent</ItemDescription>
+                            <ItemAction>ROUTE</ItemAction>
+                            <ItemActionParams>test-app/edit</ItemActionParams>
+                            <ItemExpanded>1</ItemExpanded>
+                            <ItemOpenMulti/>
+                            <ItemOpenNewPage/>
+                            <ItemInputParams>
+                                <InputParam key="ParticipantID">1001</InputParam>
+                            </ItemInputParams>
+                            <ItemIconData>pi-bell</ItemIconData>
+                            <Items>
+                            </Items>
+                        </Item>
+                        <Item>
+                            <ItemSysname>8736B664-F11A-4220-BEEA-891ABFCD3201</ItemSysname>
+                            <ItemCaption>Подзаголовок</ItemCaption>
+                            <ItemDescription></ItemDescription>
+                            <ItemExpanded>1</ItemExpanded>
+                            <ItemOpenMulti/>
+                            <ItemOpenNewPage/>
+                            <ItemIconData>pi-send</ItemIconData>
+                            <Items>
+                                <Item>
+                                    <ItemSysname>8736B664-F92A-4220-BEEA-4E2A1FCD37D2</ItemSysname>
+                                    <ItemCaption>Авто</ItemCaption>
+                                    <ItemDescription>Авто</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams>loans/auto</ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>qi-car</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>8736B664-F11A-4220-BEEA-891ABFC12345</ItemSysname>
+                                    <ItemCaption>Подзаголовок</ItemCaption>
+                                    <ItemDescription></ItemDescription>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-send</ItemIconData>
+                                    <Items>
+                                        <Item>
+                                            <ItemSysname>8736B664-F92A-4220-BEEA-4E2A1FCD37D3</ItemSysname>
+                                            <ItemCaption>Карты</ItemCaption>
+                                            <ItemDescription>Карты</ItemDescription>
+                                            <ItemAction>NEWCHAIN</ItemAction>
+                                            <ItemActionParams>loans/cards</ItemActionParams>
+                                            <ItemExpanded>1</ItemExpanded>
+                                            <ItemOpenMulti/>
+                                            <ItemOpenNewPage/>
+                                            <ItemIconData>qi-card</ItemIconData>
+                                            <Items>
+                                            </Items>
+                                        </Item>
+                                        <Item>
+                                            <ItemSysname>microLoan</ItemSysname>
+                                            <ItemCaption>Мини анкета</ItemCaption>
+                                            <ItemDescription>Мини анкета</ItemDescription>
+                                            <ItemAction>NEWCHAIN</ItemAction>
+                                            <ItemActionParams>loans/microLoan</ItemActionParams>
+                                            <ItemExpanded>1</ItemExpanded>
+                                            <ItemOpenMulti/>
+                                            <ItemOpenNewPage/>
+                                            <ItemIconData>qi-calc</ItemIconData>
+                                            <Items>
+                                            </Items>
+                                        </Item>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>documentList</ItemSysname>
+                                    <ItemCaption>Список заявок</ItemCaption>
+                                    <ItemDescription>Список заявок</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams>documents/documents</ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>autotests</ItemSysname>
+                                    <ItemCaption>Автотестирование</ItemCaption>
+                                    <ItemDescription>Автотестирование</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams>autotests/autotests</ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>reactiveForms</ItemSysname>
+                                    <ItemCaption>Тестирование Reactive Forms</ItemCaption>
+                                    <ItemDescription>Тестирование Reactive Forms</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams>reactiveForms/reactiveForms</ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>test1</ItemSysname>
+                                    <ItemCaption>Пункт меню 3 уровня</ItemCaption>
+                                    <ItemDescription>Пункт меню 3 уровня</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams></ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>test2</ItemSysname>
+                                    <ItemCaption>Пункт меню 3 уровня</ItemCaption>
+                                    <ItemDescription>Пункт меню 3 уровня</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams></ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>test3</ItemSysname>
+                                    <ItemCaption>Пункт меню 3 уровня</ItemCaption>
+                                    <ItemDescription>Пункт меню 3 уровня</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams></ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>test4</ItemSysname>
+                                    <ItemCaption>Пункт меню 3 уровня</ItemCaption>
+                                    <ItemDescription>Пункт меню 3 уровня</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams></ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>test5</ItemSysname>
+                                    <ItemCaption>Пункт меню 3 уровня</ItemCaption>
+                                    <ItemDescription>Пункт меню 3 уровня</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams></ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>test6</ItemSysname>
+                                    <ItemCaption>Пункт меню 3 уровня</ItemCaption>
+                                    <ItemDescription>Пункт меню 3 уровня</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams></ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>test7</ItemSysname>
+                                    <ItemCaption>Пункт меню 3 уровня</ItemCaption>
+                                    <ItemDescription>Пункт меню 3 уровня</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams></ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                            </Items>
+                        </Item>
+                        <Item>
+                            <ItemSysname>8736B664-F92A-4220-BEEA-4E2A1FCD37D1</ItemSysname>
+                            <ItemCaption>Ипотека</ItemCaption>
+                            <ItemDescription>Ипотека</ItemDescription>
+                            <ItemAction>NEWCHAIN</ItemAction>
+                            <ItemActionParams>loans/mortgage</ItemActionParams>
+                            <ItemExpanded>1</ItemExpanded>
+                            <ItemOpenMulti/>
+                            <ItemOpenNewPage/>
+                            <ItemIconData>pi-bell</ItemIconData>
+                            <Items>
+                            </Items>
+                        </Item>
+                    </Items>
+                </Item>
+                <Item>
+                    <ItemSysname>8736B664-F92A-4220-BEEA-3E2A1FCD37D5</ItemSysname>
+                    <ItemCaption>Table</ItemCaption>
+                    <ItemDescription>Table</ItemDescription>
+                    <ItemAction>NEWCHAIN</ItemAction>
+                    <ItemActionParams>table/ex2.prime</ItemActionParams>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-send</ItemIconData>
+                    <Items>
+                    </Items>
+                </Item>
+                <Item>
+                    <ItemSysname>8736B664-F92A-4220-BEEA-3E2A1FCD37D6</ItemSysname>
+                    <ItemCaption>Messages. New request</ItemCaption>
+                    <ItemDescription>Messages. New request</ItemDescription>
+                    <ItemAction>NEWCHAIN</ItemAction>
+                    <ItemActionParams>messages/newRequest</ItemActionParams>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-map-marker</ItemIconData>
+                    <Items>
+                    </Items>
+                </Item>
+                <Item>
+                    <ItemSysname>8736B664-F92A-4220-BEEA-3E2A1FCD37D7</ItemSysname>
+                    <ItemCaption>Messages. New request. Material (вторая строка)</ItemCaption>
+                    <ItemDescription>Messages. New request. Material (вторая строка)</ItemDescription>
+                    <ItemAction>NEWCHAIN</ItemAction>
+                    <ItemActionParams>messages/newRequest_mat</ItemActionParams>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-file</ItemIconData>
+                    <Items>
+                    </Items>
+                </Item>
+                <Item>
+                    <ItemSysname>components-tests</ItemSysname>
+                    <ItemCaption>Тесты компонентов</ItemCaption>
+                    <ItemDescription>Тесты компонентов</ItemDescription>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-check-square</ItemIconData>
+                    <Items>
+                        <Item>
+                            <ItemSysname>divider</ItemSysname>
+                            <ItemCaption>divider</ItemCaption>
+                            <ItemDescription>divider</ItemDescription>
+                            <ItemAction>NEWCHAIN</ItemAction>
+                            <ItemActionParams>tests/divider</ItemActionParams>
+                            <ItemExpanded>1</ItemExpanded>
+                            <ItemOpenMulti/>
+                            <ItemOpenNewPage/>
+                            <ItemIconData>pi-check-circle</ItemIconData>
+                            <Items>
+                            </Items>
+                        </Item>
+                    </Items>
+                </Item>
+            </Items>
+        </Item>
+        <Item>
+            <ItemSysname>8736B664-F92A-4220-BEEA-891ABFCD37D1</ItemSysname>
+            <ItemCaption>Группа пунктов</ItemCaption>
+            <ItemDescription>Группа пунктов</ItemDescription>
+            <ItemExpanded>1</ItemExpanded>
+            <ItemOpenMulti/>
+            <ItemOpenNewPage/>
+            <ItemIconData>pi-send</ItemIconData>
+            <Items>
+                <Item>
+                    <ItemSysname>8736B664-F92A-4221-BEEA-3E2A1FCD37D1</ItemSysname>
+                    <ItemCaption>Справочники (какой-то достаточно длинный заголовок пункта меню)</ItemCaption>
+                    <ItemDescription>Справочники</ItemDescription>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-desktop</ItemIconData>
+                    <Items>
+                        <Item>
+                            <ItemSysname>8736B664-F11A-4220-BEEA-891ABFCD3300</ItemSysname>
+                            <ItemCaption>FA</ItemCaption>
+                            <ItemDescription></ItemDescription>
+                            <ItemExpanded>1</ItemExpanded>
+                            <ItemOpenMulti/>
+                            <ItemOpenNewPage/>
+                            <ItemIconData>pi-send</ItemIconData>
+                            <Items>
+                                <Item>
+                                    <ItemSysname>8736B664-F92A-4220-BEEA-4E2A1FCD37D1</ItemSysname>
+                                    <ItemCaption>Справочник "Алгоритмы разнесения по видам доходов"</ItemCaption>
+                                    <ItemDescription>Справочник "Алгоритмы разнесения по видам доходов"
+                                    </ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams>fa/ref_algs</ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>8736B664-F92A-4220-BEEA-4E2A1FCD37D2</ItemSysname>
+                                    <ItemCaption>Справочник видов доходов</ItemCaption>
+                                    <ItemDescription>Справочник видов доходов</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams>fa/ref_kinds</ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-desktop</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>8736B664-F92A-4910-BEEA-3E2A5FCD27D1</ItemSysname>
+                                    <ItemCaption>Messages. New request</ItemCaption>
+                                    <ItemDescription>Messages. New request</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams>messages/newRequest</ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-map-marker</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                                <Item>
+                                    <ItemSysname>8736B664-F92A-4910-BEEA-3E2A5FCD27D2</ItemSysname>
+                                    <ItemCaption>Messages. New request. Material</ItemCaption>
+                                    <ItemDescription>Messages. New request. Material</ItemDescription>
+                                    <ItemAction>NEWCHAIN</ItemAction>
+                                    <ItemActionParams>messages/newRequest_mat</ItemActionParams>
+                                    <ItemExpanded>1</ItemExpanded>
+                                    <ItemOpenMulti/>
+                                    <ItemOpenNewPage/>
+                                    <ItemIconData>pi-map-marker</ItemIconData>
+                                    <Items>
+                                    </Items>
+                                </Item>
+                            </Items>
+                        </Item>
+                    </Items>
+                </Item>
+                <Item>
+                    <ItemSysname>monitoringBP</ItemSysname>
+                    <ItemCaption>Мониторинг БП</ItemCaption>
+                    <ItemDescription>Мониторинг БП</ItemDescription>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-browser</ItemIconData>
+                    <Items>
+                        <Item>
+                            <ItemSysname>processCards</ItemSysname>
+                            <ItemCaption>Карты процессов</ItemCaption>
+                            <ItemDescription>Карты процессов</ItemDescription>
+                            <ItemAction>NEWCHAIN</ItemAction>
+                            <ItemActionParams>fa/processCards</ItemActionParams>
+                            <ItemExpanded>1</ItemExpanded>
+                            <ItemOpenMulti/>
+                            <ItemOpenNewPage/>
+                            <ItemIconData>pi-desktop</ItemIconData>
+                        </Item>
+                    </Items>
+                </Item>
+                <Item>
+                    <ItemSysname>schemasEditor</ItemSysname>
+                    <ItemCaption>Schemas Editor</ItemCaption>
+                    <ItemDescription>Schemas Editor</ItemDescription>
+                    <ItemAction>NEWCHAIN</ItemAction>
+                    <ItemActionParams>schemas-editor/form</ItemActionParams>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-send</ItemIconData>
+                    <Items>
+                    </Items>
+                </Item>
+                <Item>
+                    <ItemSysname>8736B664-F92A-4220-BEEA-3E2A1FCD37D4</ItemSysname>
+                    <ItemCaption>Table</ItemCaption>
+                    <ItemDescription>Table</ItemDescription>
+                    <ItemAction>NEWCHAIN</ItemAction>
+                    <ItemActionParams>table/ex1.prime</ItemActionParams>
+                    <ItemExpanded>1</ItemExpanded>
+                    <ItemOpenMulti/>
+                    <ItemOpenNewPage/>
+                    <ItemIconData>pi-send</ItemIconData>
+                    <Items>
+                    </Items>
+                </Item>
+                <Item>
+                    <ItemSysname>page-error</ItemSysname>
+                    <ItemCaption>Page Error</ItemCaption>
+                    <ItemAction>NEWCHAIN</ItemAction>
+                    <ItemActionParams>page-error/form</ItemActionParams>
+                </Item>
+            </Items>
+        </Item>
+    </Items>
+</Menu>
+

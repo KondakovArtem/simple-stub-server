@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc" /* Redirect output structure to the directory. */,
+  },
+  "exclude": [
+    "dist",
+    "**/*.spec.ts",
+    "**/*.d.ts"
+  ]
+}

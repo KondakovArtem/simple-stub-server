@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/spec",
+    "module": "commonjs",
+    "allowJs": true,
+    "types": [
+      "jest",
+      "node",
+      "jsdom"
+    ],
+    "paths": { /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+      "@fab/front-common-core": [
+        "src/index"
+      ],
+      "@mocks/*": [
+        "mocks/*"
+      ]
+    },
+  },
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "dist"
+  ]
+}
