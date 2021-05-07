@@ -1,6 +1,6 @@
 {
   "name": "simple-stub-server",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A simple stub server built on a file and directory structure",
   "main": "src/public-api.js",
   "scripts": {
@@ -10,6 +10,14 @@
     "start": "ts-node src/index.ts -f ./stub -s",
     "ssl": "ts-node src/ssl.ts"
   },
+  "homepage": "https://github.com/KondakovArtem/simple-stub-server",
+  "keywords": [
+    "node.js",
+    "API",
+    "stub",
+    "files/folders",
+    "CRUD"
+  ],
   "bin": {
     "simple-stub-server": "src/index.js"
   },
@@ -25,7 +33,8 @@
     "json5": "^2.2.0",
     "node-openssl-cert": "^0.1.33",
     "tslib": "^2.2.0",
-    "cheerio": "^1.0.0-rc.9"
+    "cheerio": "^1.0.0-rc.9",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "gulp-javascript-obfuscator": "^1.1.6",
