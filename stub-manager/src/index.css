@@ -10,6 +10,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.layout {
+  height: 100%;
+}
+
 .trigger.anticon {
   color: white;
   padding: 0 24px;
@@ -24,5 +28,24 @@ code {
 }
 
 .header {
-  padding: 0;
+  display: flex;
+  align-items: center;
+  padding: 0px;
+}
+
+.input-path-container {
+  padding: 10px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.input-path {
+  max-width: 800px;
+}
+
+.app {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }

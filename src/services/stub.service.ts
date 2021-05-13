@@ -9,6 +9,7 @@ import {promisify} from 'util';
 import json5 from 'json5';
 import chokidar, {FSWatcher} from 'chokidar';
 import {debounce, forEachRight, flatten} from 'lodash';
+import {Server as SocketServer} from 'socket.io';
 
 import {CacheService} from './cache.service';
 import {UtilsService} from './utils.service';
@@ -32,6 +33,7 @@ export class StubService {
   private app?: ReturnType<typeof express>;
   private appJson?: ReturnType<typeof express>;
   private server?: Server;
+  private io?: SocketServer;
   private httpsServer?: https.Server;
   private utils = UtilsService.instance();
   private globPatterns: string[] = [];
@@ -168,6 +170,27 @@ export class StubService {
     this.app = express();
     this.server = new Server(this.app);
 
+    this.io = new SocketServer(this.server, {
+      path: '/_editor/socket',
+      transports: ['websocket'],
+      cors: {
+        origin: '*',
+      },
+    });
+
+    let users = 0;
+    const {io} = this;
+    if (io) {
+      io.on('connection', async (socket) => {
+        users++;
+        socket.on('disconnect', () => {
+          users--;
+          io.emit('users', {users});
+        });
+        io.emit('users', {users});
+      });
+    }
+
     //var key = fs.readFileSync(resolve(__dirname + '/../../ssl/selfsigned.key'));
     //var cert = fs.readFileSync(resolve(__dirname + '/../../ssl/selfsigned.crt'));
     // var options = {
@@ -197,17 +220,12 @@ export class StubService {
       );
       this.appJson.options('*', cors() as any);
       this.registerWatchers();
-
+      app;
       return new Promise((resolve) => {
         this.server?.listen(port, () => {
           console.log(`Stub Server listening on port ${port}`);
           resolve(true);
         });
-
-        // this.httpsServer?.listen(3003, () => {
-        //   console.log(`Stub Server listening on port ${3003}`);
-        //   resolve(true);
-        // });
       });
     }
   }
