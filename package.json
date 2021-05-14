@@ -38,7 +38,6 @@
     "tslib": "^2.2.0"
   },
   "devDependencies": {
-    "gulp-javascript-obfuscator": "^1.1.6",
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^2.0.0",
     "@types/chokidar": "^2.1.3",
