@@ -7,13 +7,16 @@ import MonacoEditor, {MonacoEditorProps} from 'react-monaco-editor';
 import {useAppDispatch, useAppSelector} from './store/store';
 // import {counterSlice} from './store/counter';
 import {viewSlice} from './store/view';
-import {treeData} from './sample-data';
+// import {treeData} from './sample-data';
 import {SocketService} from './services/socket.service';
 import {withDimensions} from './hoc/withDimensions';
 
 const {Header, Content, Footer} = Layout;
 const {Option} = Select;
 const {TabPane} = Tabs;
+const {DirectoryTree} = Tree;
+
+const socketService = SocketService.instance();
 
 const selectBefore = (
   <Select defaultValue="GET">
@@ -35,13 +38,17 @@ const MonacoEditorDim = withDimensions<MonacoEditorProps>(MonacoEditor);
 
 function App() {
   // const selector = useAppSelector(({counter}) => counter);
-  const view = useAppSelector(({view}) => view);
+  const {view, stub} = useAppSelector((state) => state);
+
   const dispatch = useAppDispatch();
   const [text, setText] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    SocketService.instance().init(dispatch);
+    (async () => {
+      await socketService.init(dispatch);
+      socketService.requestFiles();
+    })();
   }, []);
 
   const options = {
@@ -78,8 +85,7 @@ function App() {
               onChange={setActiveTab}
               type={'editable-card'}
               hideAdd
-              onEdit={onEditTabs}
-            >
+              onEdit={onEditTabs}>
               {view.tabs.map(({name, tip, uid}) => (
                 <TabPane
                   key={uid}
@@ -90,7 +96,7 @@ function App() {
                   }
                   closable={true}
                   animated={true}>
-                  {uid === '0' ? (
+                   {uid === '0' ? (
                     <Spin spinning={loading}>
                       <MonacoEditorDim
                         language="typescript"
@@ -106,25 +112,25 @@ function App() {
                 </TabPane>
               ))}
             </Tabs>
-            {/* <h1>antd version: {version}</h1>
-            <InputNumber value={selector.value}></InputNumber>
-            <Button
-              type="primary"
-              style={{marginLeft: 8}}
-              onClick={() => dispatch(counterSlice.actions.incrementByAmount(10))}>
-              Primary Button
-            </Button> */}
+            
           </div>
         </Content>
         <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
       </Layout>
+
+
       <Drawer
         title="Basic Drawer"
         placement={'left'}
         closable={true}
+        bodyStyle={{padding: 0, display: 'flex', flexDirection: 'column'}}
         onClose={() => dispatch(viewSlice.actions.closeDrawer())}
         visible={view.showDrawer}>
-        <Tree treeData={treeData} />
+        <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
+          <Spin spinning={stub.pending}>
+            <DirectoryTree treeData={stub.files} />
+          </Spin>
+        </div>
       </Drawer>
     </>
   );

@@ -1,7 +1,10 @@
-import { useAppDispatch } from "../store/store";
+import {useAppDispatch} from '../store/store';
 import {io} from 'socket.io-client';
-import { viewSlice } from "../store/view";
+import {viewSlice} from '../store/view';
+import {stubSlice} from '../store/stub';
+import {SocketEvents} from '../models/events';
 
+const {CONNECT, REQUEST_FILES, USERS, DISCONNECT} = SocketEvents;
 
 const URL = 'localhost:3001';
 
@@ -12,6 +15,7 @@ export class SocketService {
   }
 
   private dispatch: any;
+  private socket?: ReturnType<typeof io>;
 
   constructor() {
     if (!SocketService._instance) {
@@ -20,24 +24,30 @@ export class SocketService {
     return SocketService._instance;
   }
 
-  public init(dispatch: ReturnType<typeof useAppDispatch>) {
+  public async init(dispatch: ReturnType<typeof useAppDispatch>) {
     this.dispatch = dispatch;
-    const socket = io(URL, {
-        path: '/_editor/socket',
-        transports: ['websocket'],
-      });
-      socket.onAny((event, ...args) => {
-        console.log(event, args);
-      });
-      socket.on('connect', () => {
-        console.log('connect');
-        this.dispatch(viewSlice.actions.setConnected(true));
-      });
-      socket.on('disconnect', () => {
-        console.log('connect');
-        this.dispatch(viewSlice.actions.setConnected(false));
-      });
+    this.socket = io(URL, {
+      path: '/_editor/socket',
+      transports: ['websocket'],
+    });
+    this.socket.onAny((event, ...args) => {
+      console.log(event, args);
+    });
+    this.socket.on(CONNECT, () => {
+      console.log(CONNECT);
+      this.dispatch(viewSlice.actions.setConnected(true));
+    });
+    this.socket.on(DISCONNECT, () => {
+      console.log(DISCONNECT);
+      this.dispatch(viewSlice.actions.setConnected(false));
+    });
+    this.socket.on(REQUEST_FILES, (data) => {
+      this.dispatch(stubSlice.actions.fillFiles(data));
+    });
   }
 
-
+  public requestFiles() {
+    this.dispatch(stubSlice.actions.requestFiles());
+    this.socket?.emit(SocketEvents.REQUEST_FILES);
+  }
 }
