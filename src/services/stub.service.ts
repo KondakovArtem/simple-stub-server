@@ -10,6 +10,7 @@ import json5 from 'json5';
 import chokidar, {FSWatcher} from 'chokidar';
 import {debounce, forEachRight, flatten} from 'lodash';
 import {Server as SocketServer} from 'socket.io';
+import cookieParser from 'cookie-parser';
 
 import {CacheService} from './cache.service';
 import {UtilsService} from './utils.service';
@@ -116,7 +117,7 @@ export class StubService {
       const itemData = parse(apiUrl);
       const type = itemData.name.toLowerCase() as TTypes;
       const dataType = itemData.ext.replace(/\./gi, '').toLowerCase() as TStubTypes;
-      const apiPath = `/${normalize(dirname(apiUrl)).replace(/\\/gi, '/').replace(/#/gi, ':')}`;
+      const apiPath = `/${normalize(dirname(apiUrl)).replace(/\\/gi, '/').replace(/##/gi, '*').replace(/#/gi, ':')}`;
 
       if (dataType === 'swagger') {
         await this.registerSwaggerApi({apiUrl, item, itemData, type, dataType, apiPath});
@@ -129,19 +130,19 @@ export class StubService {
               return res.json(json5.parse(await fs.readFile(item, 'utf-8')));
             } else if (dataType === 'js') {
               delete require.cache[require.resolve(item)];
-              const {params, body, query} = req;
+              const {params, body, query, cookies} = req;
               // eslint-disable-next-line @typescript-eslint/no-var-requires
               const fn = require(item);
-              let cbResult = fn({params, body, query}, UtilsService.instance());
+              let cbResult = fn({params, body, query, cookies}, UtilsService.instance(), res);
               if (cbResult instanceof Promise) {
                 cbResult = await cbResult;
               }
-              return res.json(cbResult);
+              return !res.writableEnded && res.json(cbResult);
             }
           } catch (e) {
             error = e;
           }
-          res.status(500).send(error);
+          res.status(500).send(error + '');
         };
         this.registerApiMethod(type, apiPath, cb);
       }
@@ -149,20 +150,31 @@ export class StubService {
   }, 500);
 
   public registerApiMethod(type: string, apiPath: string, cb: RequestHandler, description?: string) {
+    const {props} = this;
+    const {port} = props;
+
     if (type === 'post') {
-      console.log(`Register: ${type.toUpperCase()} ${apiPath} ${description ? `(${description})` : ''}`);
+      console.log(
+        `Register: ${type.toUpperCase()} http://localhost:${port}${apiPath} ${description ? `(${description})` : ''}`,
+      );
       this.appJson?.post(apiPath, (...args) => cb(...args));
     } else if (type === 'put') {
-      console.log(`Register: ${type.toUpperCase()} ${apiPath} ${description ? `(${description})` : ''}`);
+      console.log(
+        `Register: ${type.toUpperCase()} http://localhost:${port}${apiPath} ${description ? `(${description})` : ''}`,
+      );
       this.appJson?.put(apiPath, cb);
     } else if (type === 'get') {
-      console.log(`Register: ${type.toUpperCase()} ${apiPath} ${description ? `(${description})` : ''}`);
+      console.log(
+        `Register: ${type.toUpperCase()} http://localhost:${port}${apiPath} ${description ? `(${description})` : ''}`,
+      );
       this.appJson?.get(apiPath, cb);
     } else if (type === 'delete') {
-      console.log(`Register: ${type.toUpperCase()} ${apiPath} ${description ? `(${description})` : ''}`);
+      console.log(
+        `Register: ${type.toUpperCase()} http://localhost:${port}${apiPath} ${description ? `(${description})` : ''}`,
+      );
       this.appJson?.delete(apiPath, cb);
     } else {
-      console.error(`Wrong api type = ${type} for ${apiPath}`);
+      console.error(`Wrong api type = ${type} for http://localhost:${port}${apiPath}`);
     }
   }
 
@@ -213,7 +225,7 @@ export class StubService {
     console.log(`searching in`, this.globPatterns);
 
     if (app) {
-      this.appJson = app.use(
+      this.appJson = app.use(cookieParser()).use(
         express.json({
           limit: '50mb',
         }),

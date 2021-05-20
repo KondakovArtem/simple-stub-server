@@ -2,7 +2,7 @@ import {task, watch, series, parallel, dest, src} from 'gulp';
 import ts from 'gulp-typescript';
 import sourcemaps from 'gulp-sourcemaps';
 // @ts-ignore
-import javascriptObfuscator from 'gulp-javascript-obfuscator';
+// import javascriptObfuscator from 'gulp-javascript-obfuscator';
 
 import del from 'del';
 const BUILD_FOLDER = 'dist';
@@ -27,13 +27,15 @@ task('ts', () => {
 });
 
 task('uglify', () => {
-  return src(`${BUILD_FOLDER}/**/*.js`)
-    .pipe(
-      javascriptObfuscator({
-        stringArrayEncoding: ['base64'],
-      }),
-    )
-    .pipe(dest((file) => file.base));
+  return (
+    src(`${BUILD_FOLDER}/**/*.js`)
+      // .pipe(
+      //   // javascriptObfuscator({
+      //   //   stringArrayEncoding: ['base64'],
+      //   // }),
+      // )
+      .pipe(dest((file) => file.base))
+  );
   //.pipe(dest('./*.js'))
 });
 
