@@ -1,30 +1,30 @@
-import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-interface IFile {
-    fileName: string;
-    children: IFile[];
+interface IFileTreeNode {
+  title: string;
+  key: string;
+  type: 'file' | 'folder';
+  children?: IFileTreeNode[];
 }
 
-
 interface StubState {
-  files: IFile[],
+  files: IFileTreeNode[];
   pending: boolean;
 }
 
 const initialState: StubState = {
-    files: [],
-    pending: false
+  files: [],
+  pending: false,
 };
-
 
 export const stubSlice = createSlice({
   name: 'stub',
   initialState,
   reducers: {
-    pending(state) {
-        state.pending = true;
+    requestFiles(state) {
+      state.pending = true;
     },
-    fill(state, action: PayloadAction<IFile[]>) {
+    fillFiles(state, action: PayloadAction<IFileTreeNode[]>) {
       state.pending = false;
       state.files = action.payload;
     },
