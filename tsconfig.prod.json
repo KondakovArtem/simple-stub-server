@@ -6,6 +6,7 @@
     "mocks/*",
     "gulpfile.ts",
     "src/exe.ts",
-    "webpack.config.ts"
+    "webpack.config.ts",
+    "stub-manager/*"
   ]
 }

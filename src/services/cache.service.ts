@@ -79,6 +79,10 @@ class CacheInstance {
     return res;
   }
 
+  clear() {
+    this.items = [];
+  }
+
   removeByKey(value: any, key = 'id') {
     let res;
     this.items = this.items.filter((item) => {
