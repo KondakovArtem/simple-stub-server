@@ -139,7 +139,7 @@ export class StubService {
       const itemData = parse(apiUrl);
       const type = itemData.name.toLowerCase() as TTypes;
       const dataType = itemData.ext.replace(/\./gi, '').toLowerCase() as TStubTypes;
-      
+
       const apiDirName = dirname(apiUrl) === '.' ? '' : normalize(dirname(apiUrl));
       const apiPath = `/${apiDirName.replace(/\\/gi, '/').replace(/##/gi, '*').replace(/#/gi, ':')}`;
 
@@ -224,15 +224,15 @@ export class StubService {
 
     console.log(`searching in`, this.globPatterns);
 
-    if (app) {
-      this.appJson = app.use(cookieParser()).use(
+    if (this.app) {
+      this.appJson = this.app.use(cookieParser()).use(
         express.json({
           limit: '50mb',
         }),
       );
-      this.appJson.options('*', cors() as any);
+      this.appJson?.options('*', cors() as any);
       this.registerWatchers();
-      
+
       return new Promise((resolve) => {
         this.server?.listen(port, () => {
           console.log(`Stub Server listening on port ${port}`);
