@@ -1,5 +1,5 @@
 import {Server} from 'http';
-import https from 'https';
+// import https from 'https';
 import {relative, parse, normalize, dirname, resolve} from 'path';
 import fs from 'fs-extra';
 import express, {RequestHandler} from 'express';
@@ -27,7 +27,7 @@ interface IStubServiceProps {
 
 const types = <const>['get', 'post', 'put', 'delete'];
 type TTypes = typeof types[number];
-const stubTypes = <const>['json5', 'js', 'json', 'swagger'];
+const stubTypes = <const>['json5', 'js', 'json', 'swagger', 'static'];
 type TStubTypes = typeof stubTypes[number];
 export class StubService {
   private app?: ReturnType<typeof express>;
@@ -89,6 +89,26 @@ export class StubService {
     }
   }
 
+  private async registerStatic(opts: any) {
+    // console.log(opts);
+    const {item, apiPath} = opts;
+    const itemFolder = dirname(item);
+    let staticData;
+    try {
+      staticData = json5.parse(await fs.readFile(item, 'utf8'));
+    } catch (e) {
+      console.error(e.toString());
+    }
+    if (staticData) {
+      const staticPath = resolve(resolve(itemFolder, staticData.folder));
+      this.app?.use(apiPath, express.static(staticPath));
+      console.log(`Register STATIC: in URI ${apiPath} folder - ${staticPath}`);
+      // ${type.toUpperCase()} ${apiPath} ${description ? `(${description})` : ''}`);
+    }
+
+    // this.appJson?.post(apiPath, (...args) => cb(...args));
+  }
+
   private updateRoutesDebounce = debounce(async () => {
     // this.registerWatcher(globPattern, updateRoutesDebounce);
     const {props} = this;
@@ -118,10 +138,12 @@ export class StubService {
       const itemData = parse(apiUrl);
       const type = itemData.name.toLowerCase() as TTypes;
       const dataType = itemData.ext.replace(/\./gi, '').toLowerCase() as TStubTypes;
-      const apiPath = `/${normalize(dirname(apiUrl)).replace(/\\/gi, '/').replace(/#/gi, ':')}`;
-
+      const apiDirName = dirname(apiUrl) === '.' ? '' : normalize(dirname(apiUrl));
+      const apiPath = `/${apiDirName.replace(/\\/gi, '/').replace(/#/gi, ':')}`;
       if (dataType === 'swagger') {
         await this.registerSwaggerApi({apiUrl, item, itemData, type, dataType, apiPath});
+      } else if (dataType === 'static') {
+        await this.registerStatic({apiUrl, item, itemData, type, dataType, apiPath});
       } else {
         const cb: RequestHandler = async (req, res) => {
           let error;
@@ -183,6 +205,7 @@ export class StubService {
     this.globPatterns = [
       `${absFolder}/**/@(${types.join('|')}).@(${stubTypes.join('|')})`,
       `${absFolder}/**/*.swagger`,
+      `${absFolder}/**/*.static`,
     ];
 
     console.log(`searching in`, this.globPatterns);
