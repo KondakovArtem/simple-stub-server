@@ -7,6 +7,9 @@
     "gulpfile.ts",
     "src/exe.ts",
     "webpack.config.ts",
-    "stub-manager/*"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "stub-manager/src/models/**/*.ts"
   ]
 }

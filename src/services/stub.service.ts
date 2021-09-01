@@ -8,8 +8,9 @@ import glob from 'glob';
 import {promisify} from 'util';
 import json5 from 'json5';
 import chokidar, {FSWatcher} from 'chokidar';
-import {debounce, forEachRight, flatten} from 'lodash';
+import {debounce, forEachRight, flatten, pick} from 'lodash';
 import cookieParser from 'cookie-parser';
+import httpProxyMiddleware, {createProxyMiddleware} from 'http-proxy-middleware';
 
 import {CacheService} from './cache.service';
 import {UtilsService} from './utils.service';
@@ -156,12 +157,17 @@ export class StubService {
               return res.json(json5.parse(await fs.readFile(item, 'utf-8')));
             } else if (dataType === 'js') {
               delete require.cache[require.resolve(item)];
-              const {params, body, query, cookies} = req;
+
+              // const {params, body, query, cookies, headers} = req;
               // eslint-disable-next-line @typescript-eslint/no-var-requires
               const fn = require(item);
-              let cbResult = fn({params, body, query, cookies}, UtilsService.instance(), res);
+              const utils = UtilsService.instance();
+              let cbResult = fn(pick(req, ['params', 'body', 'query', 'headers']), utils, res);
               if (cbResult instanceof Promise) {
                 cbResult = await cbResult;
+              }
+              if (cbResult === utils.DOWNLOAD_FILE) {
+                return;
               }
               return !res.writableEnded && res.json(cbResult);
             }
@@ -204,6 +210,128 @@ export class StubService {
     }
   }
 
+  // private registerProxy(absFolder: string) {
+  //   const proxyConf = resolve(absFolder, 'proxy.conf.js');
+  //   if (fs.existsSync(proxyConf)) {
+  //     // eslint-disable-next-line @typescript-eslint/no-var-requires
+  //     const config = require(proxyConf);
+  //     this.app?.use('/', createProxyMiddleware(config));
+  //     debugger;
+  //   }
+  // }
+  /**
+   * Assume a proxy configuration specified as:
+   * proxy: {
+   *   'context': { options }
+   * }
+   * OR
+   * proxy: {
+   *   'context': 'target'
+   * }
+   */
+  setupProxyFeature(absFolder: string) {
+    const proxyConfPath = resolve(absFolder, 'proxy.conf.js');
+    if (fs.existsSync(proxyConfPath)) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      let proxy = require(proxyConfPath);
+
+      if (!Array.isArray(proxy)) {
+        if (Object.prototype.hasOwnProperty.call(proxy, 'target')) {
+          proxy = [proxy];
+        } else {
+          proxy = Object.keys(proxy).map((context) => {
+            let proxyOptions;
+            // For backwards compatibility reasons.
+            const correctedContext = context.replace(/^\*$/, '**').replace(/\/\*$/, '');
+
+            if (typeof proxy[context] === 'string') {
+              proxyOptions = {
+                context: correctedContext,
+                target: proxy[context],
+              };
+            } else {
+              proxyOptions = Object.assign({}, proxy[context]);
+              proxyOptions.context = correctedContext;
+            }
+
+            proxyOptions.logLevel = proxyOptions.logLevel || 'warn';
+
+            return proxyOptions;
+          });
+        }
+      }
+
+      const getProxyMiddleware = (proxyConfig: any) => {
+        const context = proxyConfig.context || proxyConfig.path;
+
+        // It is possible to use the `bypass` method without a `target`.
+        // However, the proxy middleware has no use in this case, and will fail to instantiate.
+        if (proxyConfig.target) {
+          return createProxyMiddleware(context, proxyConfig);
+        }
+      };
+      /**
+       * Assume a proxy configuration specified as:
+       * proxy: [
+       *   {
+       *     context: ...,
+       *     ...options...
+       *   },
+       *   // or:
+       *   function() {
+       *     return {
+       *       context: ...,
+       *       ...options...
+       *     };
+       *   }
+       * ]
+       */
+      proxy.forEach((proxyConfigOrCallback: () => void | any) => {
+        let proxyMiddleware: httpProxyMiddleware.RequestHandler | undefined;
+
+        let proxyConfig = typeof proxyConfigOrCallback === 'function' ? proxyConfigOrCallback() : proxyConfigOrCallback;
+
+        proxyMiddleware = getProxyMiddleware(proxyConfig);
+
+        const handle = (req: any, res: any, next: any) => {
+          if (typeof proxyConfigOrCallback === 'function') {
+            const newProxyConfig = proxyConfigOrCallback();
+
+            if (newProxyConfig !== proxyConfig) {
+              proxyConfig = newProxyConfig;
+              proxyMiddleware = getProxyMiddleware(proxyConfig);
+            }
+          }
+
+          // - Check if we have a bypass function defined
+          // - In case the bypass function is defined we'll retrieve the
+          // bypassUrl from it otherwise bypassUrl would be null
+          const isByPassFuncDefined = typeof proxyConfig.bypass === 'function';
+          const bypassUrl = isByPassFuncDefined ? proxyConfig.bypass(req, res, proxyConfig) : null;
+
+          if (typeof bypassUrl === 'boolean') {
+            // skip the proxy
+            req.url = null;
+            next();
+          } else if (typeof bypassUrl === 'string') {
+            // byPass to that url
+            req.url = bypassUrl;
+            next();
+          } else if (proxyMiddleware) {
+            return proxyMiddleware(req, res, next);
+          } else {
+            next();
+          }
+        };
+        if (this.app) {
+          this.app.use(handle);
+          // Also forward error requests to the proxy so it can handle them.
+          this.app.use((error: any, req: any, res: any, next: any) => handle(req, res, next));
+        }
+      });
+    }
+  }
+
   public async init() {
     const {props} = this;
     const {port, folder} = props;
@@ -230,7 +358,11 @@ export class StubService {
           limit: '50mb',
         }),
       );
+
+      this.setupProxyFeature(absFolder);
+
       this.appJson?.options('*', cors() as any);
+
       this.registerWatchers();
 
       return new Promise((resolve) => {

@@ -8,6 +8,9 @@ export class UtilsService {
   public cache = new CacheService();
   private static _instance: UtilsService;
   private folder?: string;
+
+  public DOWNLOAD_FILE = Symbol('downloadFile');
+
   public static instance() {
     return new UtilsService();
   }
