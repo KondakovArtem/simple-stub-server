@@ -98,7 +98,7 @@ export class StubService {
     let staticData;
     try {
       staticData = json5.parse(await fs.readFile(item, 'utf8'));
-    } catch (e) {
+    } catch (e: any) {
       console.error(e.toString());
     }
     if (staticData) {
@@ -166,7 +166,7 @@ export class StubService {
               if (cbResult instanceof Promise) {
                 cbResult = await cbResult;
               }
-              if (cbResult === utils.DOWNLOAD_FILE) {
+              if (cbResult === utils.DOWNLOAD_FILE || cbResult === utils.CUSTOM_RESPONSE) {
                 return;
               }
               return !res.writableEnded && res.json(cbResult);

@@ -3,6 +3,7 @@ import {get, isBoolean, isEmpty, isNumber, isObject, isString} from 'lodash';
 import {CacheService} from './cache.service';
 import {Definition, Definitions, IMethodParameters, RequiredIn, IProperty} from './swagger.model';
 import {convertDataFromMenu} from './utils/menu-xml';
+import Upload from 'upload-file';
 
 export class UtilsService {
   public cache = new CacheService();
@@ -10,6 +11,9 @@ export class UtilsService {
   private folder?: string;
 
   public DOWNLOAD_FILE = Symbol('downloadFile');
+  public CUSTOM_RESPONSE = Symbol('customResponse');
+
+  public Upload = Upload;
 
   public static instance() {
     return new UtilsService();
