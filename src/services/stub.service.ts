@@ -162,7 +162,8 @@ export class StubService {
               // eslint-disable-next-line @typescript-eslint/no-var-requires
               const fn = require(item);
               const utils = UtilsService.instance();
-              let cbResult = fn(pick(req, ['params', 'body', 'query', 'headers']), utils, res);
+              // let cbResult = fn(pick(req, ['params', 'body', 'query', 'headers']), utils, res);
+              let cbResult = fn(req, utils, res);
               if (cbResult instanceof Promise) {
                 cbResult = await cbResult;
               }
