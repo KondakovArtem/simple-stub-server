@@ -4,6 +4,26 @@ import {debounce} from 'lodash';
 import fs from 'fs-extra';
 import {resolve} from 'path';
 
+
+export const stringify = (obj: any, indent = 2): string =>
+    JSON.stringify(
+        obj,
+        (key, value) => {
+            if (Array.isArray(value) && !value.some((x) => x && typeof x === 'object')) {
+                return `\uE000${JSON.stringify(
+                    value.map((v) => (typeof v === 'string' ? v.replace(/"/g, '\uE001') : v)),
+                )}\uE000`;
+            }
+            return value;
+        },
+        indent,
+    ).replace(/"\uE000([^\uE000]+)\uE000"/g, (match) =>
+        match
+            .substr(2, match.length - 4)
+            .replace(/\\"/g, '"')
+            .replace(/\uE001/g, '\\"'),
+    );
+
 class CacheInstance {
   items: any[] = [];
 
