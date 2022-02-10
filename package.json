@@ -1,6 +1,6 @@
 {
   "name": "simple-stub-server",
-  "version": "1.1.6",
+  "version": "1.1.11",
   "description": "A simple stub server built on a file and directory structure",
   "main": "src/public-api.js",
   "scripts": {

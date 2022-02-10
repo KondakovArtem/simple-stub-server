@@ -50,6 +50,10 @@ export class UtilsService {
     this.folder = folder;
   }
 
+  public async delay(count: number) {
+    return new Promise((resolve) => setTimeout(resolve, count));
+  }
+
   public checkInputParameters(
     req: Parameters<RequestHandler>[0],
     parameters: IMethodParameters[],

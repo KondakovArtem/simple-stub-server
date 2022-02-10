@@ -4,25 +4,24 @@ import {debounce} from 'lodash';
 import fs from 'fs-extra';
 import {resolve} from 'path';
 
-
 export const stringify = (obj: any, indent = 2): string =>
-    JSON.stringify(
-        obj,
-        (key, value) => {
-            if (Array.isArray(value) && !value.some((x) => x && typeof x === 'object')) {
-                return `\uE000${JSON.stringify(
-                    value.map((v) => (typeof v === 'string' ? v.replace(/"/g, '\uE001') : v)),
-                )}\uE000`;
-            }
-            return value;
-        },
-        indent,
-    ).replace(/"\uE000([^\uE000]+)\uE000"/g, (match) =>
-        match
-            .substr(2, match.length - 4)
-            .replace(/\\"/g, '"')
-            .replace(/\uE001/g, '\\"'),
-    );
+  JSON.stringify(
+    obj,
+    (key, value) => {
+      if (Array.isArray(value) && !value.some((x) => x && typeof x === 'object')) {
+        return `\uE000${JSON.stringify(
+          value.map((v) => (typeof v === 'string' ? v.replace(/"/g, '\uE001') : v)),
+        )}\uE000`;
+      }
+      return value;
+    },
+    indent,
+  ).replace(/"\uE000([^\uE000]+)\uE000"/g, (match) =>
+    match
+      .substr(2, match.length - 4)
+      .replace(/\\"/g, '"')
+      .replace(/\uE001/g, '\\"'),
+  );
 
 class CacheInstance {
   items: any[] = [];
@@ -55,17 +54,19 @@ class CacheInstance {
     const {cachePath} = this;
     await fs.mkdirs(cachePath as string);
     Promise.all([
-      await fs.writeJSON(resolve(cachePath as string, this.getCachePath()), this.items, {
-        spaces: 1,
-      }),
-      await fs.writeJSON(resolve(cachePath as string, this.getCacheHelperPath()), this.uniq.getMap(), {
-        spaces: 1,
-      }),
+      await fs.writeFile(resolve(cachePath as string, this.getCachePath()), stringify(this.items)),
+      await fs.writeFile(resolve(cachePath as string, this.getCacheHelperPath()), stringify(this.uniq.getMap())),
     ]);
   }, 500);
 
   add(item: any, key = 'id') {
-    item[key] = this.uniq.get(this.prefix);
+    if (item[key] != undefined) {
+      if (this.getByKey(item[key], key)) {
+        throw new Error(`Item with key = ${item[key]} already exist`);
+      }
+    } else {
+      item[key] = this.uniq.get(this.prefix);
+    }
     this.items.push(item);
     this.cachePath && this.updateCacheDebounce();
     return item[key];
@@ -95,8 +96,16 @@ class CacheInstance {
       }
       return item;
     });
-    this.cachePath && this.updateCacheDebounce();
+    this.cachePath && res.length && this.updateCacheDebounce();
     return res;
+  }
+
+  updateOrCreateByKey(value: any, key = 'id') {
+    const res = this.updateByKey(value, key);
+    if (!res.length) {
+      this.add(value);
+    }
+    return value;
   }
 
   clear() {

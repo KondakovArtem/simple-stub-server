@@ -8,7 +8,7 @@ import glob from 'glob';
 import {promisify} from 'util';
 import json5 from 'json5';
 import chokidar, {FSWatcher} from 'chokidar';
-import {debounce, forEachRight, flatten, pick} from 'lodash';
+import {debounce, forEachRight, flatten} from 'lodash';
 import cookieParser from 'cookie-parser';
 import httpProxyMiddleware, {createProxyMiddleware} from 'http-proxy-middleware';
 
@@ -39,6 +39,8 @@ export class StubService {
   private serverSocketService = ServerSocketService.instance();
   private fileService = FileService.instance();
   private utils = UtilsService.instance();
+
+  private registeredURIs: {type: string; apiPath: string}[] = [];
 
   private globPatterns: string[] = [];
   private watchers?: FSWatcher[];
@@ -112,6 +114,7 @@ export class StubService {
   }
 
   private updateRoutesDebounce = debounce(async () => {
+    this.registeredURIs = [];
     // this.registerWatcher(globPattern, updateRoutesDebounce);
     const {props} = this;
     const {folder} = props;
@@ -182,7 +185,14 @@ export class StubService {
     }
   }, 500);
 
+  private searchInRegisteredURIs(callType: string, callApiPath: string): boolean {
+    return !!this.registeredURIs.find(({apiPath, type}) => {
+      return apiPath === callApiPath && type.toUpperCase() === callType;
+    });
+  }
+
   public registerApiMethod(type: string, apiPath: string, cb: RequestHandler, description?: string) {
+    this.registeredURIs.push({type, apiPath});
     const {props} = this;
     const {port} = props;
 
@@ -293,41 +303,44 @@ export class StubService {
         let proxyConfig = typeof proxyConfigOrCallback === 'function' ? proxyConfigOrCallback() : proxyConfigOrCallback;
 
         proxyMiddleware = getProxyMiddleware(proxyConfig);
+        const {app} = this;
+        if (app) {
+          const handle = ((req, res, next) => {
+            if (typeof proxyConfigOrCallback === 'function') {
+              const newProxyConfig = proxyConfigOrCallback();
 
-        const handle = (req: any, res: any, next: any) => {
-          if (typeof proxyConfigOrCallback === 'function') {
-            const newProxyConfig = proxyConfigOrCallback();
-
-            if (newProxyConfig !== proxyConfig) {
-              proxyConfig = newProxyConfig;
-              proxyMiddleware = getProxyMiddleware(proxyConfig);
+              if (newProxyConfig !== proxyConfig) {
+                proxyConfig = newProxyConfig;
+                proxyMiddleware = getProxyMiddleware(proxyConfig);
+              }
             }
-          }
 
-          // - Check if we have a bypass function defined
-          // - In case the bypass function is defined we'll retrieve the
-          // bypassUrl from it otherwise bypassUrl would be null
-          const isByPassFuncDefined = typeof proxyConfig.bypass === 'function';
-          const bypassUrl = isByPassFuncDefined ? proxyConfig.bypass(req, res, proxyConfig) : null;
+            // - Check if we have a bypass function defined
+            // - In case the bypass function is defined we'll retrieve the
+            // bypassUrl from it otherwise bypassUrl would be null
+            const isByPassFuncDefined = typeof proxyConfig.bypass === 'function';
+            const bypassUrl = isByPassFuncDefined ? proxyConfig.bypass(req, res, proxyConfig) : null;
 
-          if (typeof bypassUrl === 'boolean') {
-            // skip the proxy
-            req.url = null;
-            next();
-          } else if (typeof bypassUrl === 'string') {
-            // byPass to that url
-            req.url = bypassUrl;
-            next();
-          } else if (proxyMiddleware) {
-            return proxyMiddleware(req, res, next);
-          } else {
-            next();
-          }
-        };
-        if (this.app) {
-          this.app.use(handle);
+            if (typeof bypassUrl === 'boolean') {
+              // skip the proxy
+              (req as any).url = null;
+              next();
+            } else if (typeof bypassUrl === 'string') {
+              // byPass to that url
+              req.url = bypassUrl;
+              next();
+            } else if (this.searchInRegisteredURIs(req.method, req.url)) {
+              next();
+            } else if (proxyMiddleware) {
+              return proxyMiddleware(req, res, next);
+            } else {
+              next();
+            }
+          }) as Parameters<typeof app.use>[1];
+
+          app.use(handle);
           // Also forward error requests to the proxy so it can handle them.
-          this.app.use((error: any, req: any, res: any, next: any) => handle(req, res, next));
+          app.use((error: any, req: any, res: any, next: any) => handle(req, res, next));
         }
       });
     }
@@ -354,16 +367,19 @@ export class StubService {
     console.log(`searching in`, this.globPatterns);
 
     if (this.app) {
-      this.appJson = this.app.use(cookieParser()).use(
-        express.json({
-          limit: '50mb',
-        }),
-      );
-
-      this.setupProxyFeature(absFolder);
+      this.appJson = this.app
+        .use((req, res, next) => {
+          req.setEncoding('utf8');
+          (req as any).rawBody = '';
+          req.on('data', (chunk) => ((req as any).rawBody += chunk));
+          req.on('end', () => next());
+        })
+        .use(cookieParser())
+        .use(express.json({limit: '50mb'}));
 
       this.appJson?.options('*', cors() as any);
 
+      this.setupProxyFeature(absFolder);
       this.registerWatchers();
 
       return new Promise((resolve) => {
