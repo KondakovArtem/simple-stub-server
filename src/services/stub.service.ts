@@ -368,12 +368,12 @@ export class StubService {
 
     if (this.app) {
       this.appJson = this.app
-        .use((req, res, next) => {
-          req.setEncoding('utf8');
-          (req as any).rawBody = '';
-          req.on('data', (chunk) => ((req as any).rawBody += chunk));
-          req.on('end', () => next());
-        })
+        // .use((req, res, next) => {
+        //   req.setEncoding('utf8');
+        //   (req as any).rawBody = '';
+        //   req.on('data', (chunk) => ((req as any).rawBody += chunk));
+        //   req.on('end', () => next());
+        // })
         .use(cookieParser())
         .use(express.json({limit: '50mb'}));
 
