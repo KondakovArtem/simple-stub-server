@@ -1,5 +1,5 @@
 import {RequestHandler} from 'express';
-import {get, isBoolean, isEmpty, isNumber, isObject, isString} from 'lodash';
+import {get, isBoolean, isEmpty, isNumber, isObject, isString, pick} from 'lodash';
 import {CacheService} from './cache.service';
 import {Definition, Definitions, IMethodParameters, RequiredIn, IProperty} from './swagger.model';
 import {convertDataFromMenu} from './utils/menu-xml';
@@ -48,6 +48,14 @@ export class UtilsService {
 
   public setFolder(folder: string) {
     this.folder = folder;
+  }
+
+  public clean<T = any[] | Record<string, any>>(obj: T, keys: string[]) {
+    if (Array.isArray(obj)) {
+      const res = obj.map((item) => pick(item, keys));
+      return res;
+    }
+    return pick(obj, keys);
   }
 
   public async delay(count: number) {

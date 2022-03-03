@@ -1,12 +1,12 @@
 {
   "name": "simple-stub-server",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "A simple stub server built on a file and directory structure",
   "main": "src/public-api.js",
   "scripts": {
     "build": "gulp build",
-    "predeploy": "npm run build",
-    "deploy": "npm publish dist",
+    "predeploy": "yarn run build",
+    "deploy": "yarn publish dist",
     "start": "ts-node src/index.ts -f ./stub -s",
     "ssl": "ts-node src/ssl.ts"
   },
